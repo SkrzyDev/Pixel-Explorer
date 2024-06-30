@@ -1,7 +1,9 @@
 import pygame
 import sys
+import time
 
 from src.settings import Settings
+from src.player import Player
 
 class Game:
     def __init__(self):
@@ -12,8 +14,14 @@ class Game:
         self.clock = pygame.time.Clock()
         self.running = True
 
+        self.last_time = time.time()
+        self.dt = 0
+
+        self.player = Player(20, 20)
+
     def run(self):
         while self.running:
+            self._dt()
             self._check_events()
             self._update_screen()
             self.clock.tick(self.settings.fps)
@@ -30,4 +38,13 @@ class Game:
 
     def _update_screen(self):
         self.screen.fill(self.settings.bg_color)
+
+        self.player.update(self.dt)
+        self.player.render(self.screen)
+
         pygame.display.flip()
+
+    def _dt(self):
+        self.dt = time.time() - self.last_time
+        self.dt *= 60
+        self.last_time = time.time()
