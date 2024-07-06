@@ -4,6 +4,7 @@ import time
 
 from src.settings import Settings
 from src.player import Player
+from src.maze import create_grid, generate_maze 
 
 class Game:
     def __init__(self):
@@ -18,6 +19,11 @@ class Game:
         self.dt = 0
 
         self.player = Player(20, 20)
+
+        self.grid = create_grid(self.settings.screen_width, self.settings.screen_height,
+                                self.settings.screen_width // 40,
+                                self.settings.screen_height // 40, 40)
+        generate_maze(self.grid)
 
     def run(self):
         while self.running:
@@ -41,6 +47,10 @@ class Game:
 
         self.player.update(self.dt)
         self.player.render(self.screen)
+
+        for row in self.grid:
+            for cell in row:
+                cell.draw(self.screen)
 
         pygame.display.flip()
 
