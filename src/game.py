@@ -45,7 +45,7 @@ class Game:
     def _update_screen(self):
         self.screen.fill(self.settings.bg_color)
 
-        self.player.update(self.dt)
+        self.player.update(self.grid, 40, self.dt)
         self.player.render(self.screen)
 
         for row in self.grid:
